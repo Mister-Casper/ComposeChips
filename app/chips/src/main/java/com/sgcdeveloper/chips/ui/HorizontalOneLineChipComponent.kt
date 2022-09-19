@@ -1,7 +1,6 @@
 package com.sgcdeveloper.chips.ui
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -14,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sgcdeveloper.chips.model.ImagePosition
 import com.sgcdeveloper.chips.model.chips.ChipModel
 import com.sgcdeveloper.chips.model.chips.TextChipModel
 import com.sgcdeveloper.chips.model.chips.imageChip.ChipImage
@@ -61,7 +59,7 @@ fun <T : TextChipModel> TextChipsRow(
     onClick: (textChipModel: T) -> Unit
 ) {
     LazyRow(Modifier.fillMaxWidth()) {
-        items(textChips) { chip ->
+        items(textChips, key = {it.id}) { chip ->
             Chip(
                 textChip = chip,
                 modifier = modifier,
@@ -99,9 +97,9 @@ fun <T : ImageChipModel> ImageChipsRow(
                 contentPadding = contentPadding,
                 chipPadding = chipPadding,
                 content = {
-                    ChipImage(chip, ImagePosition.LEFT)
+                    ChipImage(chip.leftImage, chip.isEnable)
                     Text(text = chip.text)
-                    ChipImage(chip, ImagePosition.RIGHT)
+                    ChipImage(chip.rightImage, chip.isEnable)
                 },
                 onClick = { onClick(chip) }
             )
@@ -110,23 +108,23 @@ fun <T : ImageChipModel> ImageChipsRow(
 }
 
 @Composable
-fun RowScope.ChipImage(chip: ImageChipModel, position: ImagePosition) {
-    val colorTint = if (chip.isEnable) {
-        chip.image.enableTint
+fun RowScope.ChipImage(chipImage: ChipImage?, isEnable: Boolean) {
+    if (chipImage == null) return
+
+    val colorTint = if (isEnable) {
+        chipImage.enableTint
     } else {
-        chip.image.disableTint
+        chipImage.disableTint
     }
 
-    if (chip.image.chipImagePosition == position && chip.image.imageRes != null) {
-        Icon(
-            painter = painterResource(id = chip.image.imageRes),
-            tint = colorTint,
-            contentDescription = chip.image.contextDescription,
-            modifier = Modifier
-                .size(chip.image.imageSize)
-                .align(Alignment.CenterVertically)
-        )
-    }
+    Icon(
+        painter = painterResource(id = chipImage.imageRes),
+        tint = colorTint,
+        contentDescription = chipImage.contextDescription,
+        modifier = Modifier
+            .size(chipImage.imageSize)
+            .align(Alignment.CenterVertically)
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)

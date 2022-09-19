@@ -8,7 +8,6 @@ import com.sgcdeveloper.chips.controller.ChipsController
 import com.sgcdeveloper.chips.controller.chipClickBehavior.LimitedMultiChipsClickBehavior
 import com.sgcdeveloper.chips.controller.chipClickBehavior.MultipleChipsClickBehavior
 import com.sgcdeveloper.chips.controller.chipsLimit.MaxChipsLimit
-import com.sgcdeveloper.chips.model.ImagePosition
 import com.sgcdeveloper.chips.model.chips.TextChipModel
 import com.sgcdeveloper.chips.model.chips.imageChip.ChipImage
 import com.sgcdeveloper.chips.model.chips.imageChip.ImageChipModel
@@ -62,24 +61,21 @@ class MainViewModel : ViewModel() {
 
         private val imagePics = listOf(
             ImageChipModel(
-                isEnable = false, image = ChipImage(
-                    chipImagePosition = ImagePosition.LEFT,
+                isEnable = false, leftImage = ChipImage(
                     imageRes = R.drawable.test,
                     enableTint = Color.White,
                     disableTint = Color.Red
                 ), text = "IMAGE A"
             ),
             ImageChipModel(
-                isEnable = false, image = ChipImage(
-                    chipImagePosition = ImagePosition.RIGHT,
+                isEnable = false, rightImage = ChipImage(
                     imageRes = R.drawable.test,
                     enableTint = Color.White,
                     disableTint = Color.Blue
                 ), text = "IMAGE B"
             ),
             ImageChipModel(
-                isEnable = false, image = ChipImage(
-                    chipImagePosition = ImagePosition.RIGHT,
+                isEnable = false, leftImage = ChipImage(
                     imageRes = R.drawable.test,
                     enableTint = Color.White,
                     disableTint = Color.Green
