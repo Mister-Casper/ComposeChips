@@ -28,7 +28,6 @@ import com.sgcdeveloper.chips.model.TextChipModel
 fun <T : ChipModel> ChipsRow(
     textChips: List<T>,
     modifier: Modifier = Modifier,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = ChipDefaults.DefaultShape,
     border: BorderStroke? = null,
     colors: ChipColors = ChipDefaults.buttonColors(),
@@ -42,7 +41,6 @@ fun <T : ChipModel> ChipsRow(
             Chip(
                 textChip = chip,
                 modifier = modifier,
-                interactionSource = interactionSource,
                 shape = shape,
                 border = border,
                 colors = colors,
@@ -59,7 +57,6 @@ fun <T : ChipModel> ChipsRow(
 fun <T : TextChipModel> TextChipsRow(
     textChips: List<T>,
     modifier: Modifier = Modifier,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = ChipDefaults.DefaultShape,
     border: BorderStroke? = null,
     colors: ChipColors = ChipDefaults.buttonColors(),
@@ -72,7 +69,6 @@ fun <T : TextChipModel> TextChipsRow(
             Chip(
                 textChip = chip,
                 modifier = modifier,
-                interactionSource = interactionSource,
                 shape = shape,
                 border = border,
                 colors = colors,
@@ -91,10 +87,9 @@ fun Chip(
     textChip: ChipModel,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = ChipDefaults.DefaultShape,
     colors: ChipColors = ChipDefaults.buttonColors(),
-    border: BorderStroke? = BorderStroke(1.dp, colors.borderColor(textChip.isEnable).value),
+    border: BorderStroke?,
     contentPadding: PaddingValues = ChipDefaults.ContentPadding,
     chipPadding: PaddingValues = ChipDefaults.ChipPaddings,
     content: @Composable RowScope.() -> Unit
@@ -102,16 +97,15 @@ fun Chip(
     val isEnable = textChip.isEnable
     val contentColor by colors.contentColor(isEnable)
     val backgroundColor by colors.backgroundColor(isEnable)
-    rememberRipple()
+    val borderColor = BorderStroke(1.dp, colors.borderColor(textChip.isEnable).value)
     Surface(
         onClick = onClick,
         modifier = modifier.padding(chipPadding),
-        enabled = isEnable,
+        enabled = true,
         shape = shape,
         color = backgroundColor,
         contentColor = contentColor.copy(alpha = 1f),
-        border = border,
-        interactionSource = interactionSource
+        border = border ?: borderColor,
     ) {
         CompositionLocalProvider(LocalContentAlpha provides contentColor.alpha) {
             ProvideTextStyle(

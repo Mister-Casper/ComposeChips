@@ -39,12 +39,12 @@ object ChipDefaults {
     @Composable
     fun buttonColors(
         backgroundColor: Color = MaterialTheme.colors.primary,
-        contentColor: Color = contentColorFor(backgroundColor),
+        contentColor: Color =  MaterialTheme.colors.onSurface,
         disabledBackgroundColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f)
             .compositeOver(MaterialTheme.colors.surface),
         disabledContentColor: Color = MaterialTheme.colors.onSurface
             .copy(alpha = ContentAlpha.disabled),
-        borderColor: Color = contentColorFor(backgroundColor),
+        borderColor: Color = MaterialTheme.colors.onSurface,
         disabledBorderColor: Color = MaterialTheme.colors.onSurface
             .copy(alpha = ContentAlpha.disabled)
     ): ChipColors = DefaultChipColors(
@@ -54,15 +54,6 @@ object ChipDefaults {
         disabledContentColor = disabledContentColor,
         borderColor = borderColor,
         disabledBorderColor = disabledBorderColor
-    )
-
-    private val TextButtonHorizontalPadding = 8.dp
-
-    val TextButtonContentPadding = PaddingValues(
-        start = TextButtonHorizontalPadding,
-        top = ContentPadding.calculateTopPadding(),
-        end = TextButtonHorizontalPadding,
-        bottom = ContentPadding.calculateBottomPadding()
     )
 }
 
@@ -98,8 +89,10 @@ private class DefaultChipColors(
 
         if (backgroundColor != other.backgroundColor) return false
         if (contentColor != other.contentColor) return false
+        if (borderColor != other.borderColor) return false
         if (disabledBackgroundColor != other.disabledBackgroundColor) return false
         if (disabledContentColor != other.disabledContentColor) return false
+        if (disabledBorderColor != other.disabledBorderColor) return false
 
         return true
     }

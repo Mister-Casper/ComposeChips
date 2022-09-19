@@ -6,6 +6,8 @@ interface ChipsLimit {
 
     fun addChip(chip: ChipModel)
 
+    fun getEnabledChips(): List<String>
+
     fun hotInit(allChips: List<ChipModel>)
 
 }

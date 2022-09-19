@@ -15,9 +15,9 @@ open class ChipsController<T : ChipModel>(chips: List<T>) {
             updateChips(chipClickBehavior.hotInit(chips))
         }
 
-    open fun onChipClick(chip: T) {
-        chipClickBehavior.onChipClicked(chip, chips)
-        notifyOnChipsChanged()
+    open fun onChipClick(chip: T): List<T> {
+        updateChips(chipClickBehavior.onChipClicked(chip, chips))
+        return chips
     }
 
     fun addOnChipsChangedListener(listener: OnChipsChangedListener) {
@@ -36,14 +36,15 @@ open class ChipsController<T : ChipModel>(chips: List<T>) {
 
     fun getChipById(id: String): T? = chips.find { it.id == id }
 
+    private fun updateChips(newChips: List<T>) {
+        chips.clear()
+        chips.addAll(newChips)
+        notifyOnChipsChanged()
+    }
+
     private fun notifyOnChipsChanged() {
         onChipsChangedListeners.forEach { listener ->
             listener.onChipsChanged(chips)
         }
-    }
-
-    private fun updateChips(newChips: List<T>) {
-        chips.clear()
-        chips.addAll(newChips)
     }
 }

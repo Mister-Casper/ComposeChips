@@ -16,6 +16,10 @@ open class MaxChipsLimit(
         chipsQueue.addFirst(chip.id)
     }
 
+    override fun getEnabledChips(): List<String> {
+        return chipsQueue.toList()
+    }
+
     override fun hotInit(allChips: List<ChipModel>) {
         val enabledChips = allChips.filter { it.isEnable }
         if (enabledChips != chipsQueue) {
