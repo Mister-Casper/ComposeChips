@@ -1,22 +1,26 @@
 package com.sgcdeveloper.chips.controller.chipsLimit
 
-import com.sgcdeveloper.chips.model.ChipModel
+import com.sgcdeveloper.chips.model.chips.ChipModel
 
 open class MaxChipsLimit(
     private val maxChips: Int = Int.MAX_VALUE
 ) : ChipsLimit {
 
-    private val chipsQueue = ArrayDeque<String>()
+    private val chipsQueue = ArrayDeque<ChipModel>()
 
     override fun addChip(chip: ChipModel) {
         if (isChipLimitReached(chip)) {
             chipsQueue.removeLast()
         }
 
-        chipsQueue.addFirst(chip.id)
+        if (chip.isEnable) {
+            chipsQueue.remove(chip)
+        } else {
+            chipsQueue.addFirst(chip.copy(isEnable = true))
+        }
     }
 
-    override fun getEnabledChips(): List<String> {
+    override fun getEnabledChips(): List<ChipModel> {
         return chipsQueue.toList()
     }
 
@@ -24,7 +28,7 @@ open class MaxChipsLimit(
         val enabledChips = allChips.filter { it.isEnable }
         if (enabledChips != chipsQueue) {
             chipsQueue.clear()
-            chipsQueue.addAll(enabledChips.reversed().map { it.id })
+            chipsQueue.addAll(enabledChips.reversed().map { it })
         }
     }
 

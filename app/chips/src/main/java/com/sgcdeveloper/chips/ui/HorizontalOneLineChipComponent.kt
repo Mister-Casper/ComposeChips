@@ -1,28 +1,24 @@
 package com.sgcdeveloper.chips.ui
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sgcdeveloper.chips.model.ChipModel
-import com.sgcdeveloper.chips.model.TextChipModel
+import com.sgcdeveloper.chips.model.ImagePosition
+import com.sgcdeveloper.chips.model.chips.ChipModel
+import com.sgcdeveloper.chips.model.chips.TextChipModel
+import com.sgcdeveloper.chips.model.chips.imageChip.ChipImage
+import com.sgcdeveloper.chips.model.chips.imageChip.ImageChipModel
 
 @Composable
 fun <T : ChipModel> ChipsRow(
@@ -37,7 +33,7 @@ fun <T : ChipModel> ChipsRow(
     onClick: (chipModel: T) -> Unit
 ) {
     LazyRow(Modifier.fillMaxWidth()) {
-        items(textChips, key = { it.id }) { chip ->
+        items(textChips) { chip ->
             Chip(
                 textChip = chip,
                 modifier = modifier,
@@ -65,7 +61,7 @@ fun <T : TextChipModel> TextChipsRow(
     onClick: (textChipModel: T) -> Unit
 ) {
     LazyRow(Modifier.fillMaxWidth()) {
-        items(textChips, key = { it.id }) { chip ->
+        items(textChips) { chip ->
             Chip(
                 textChip = chip,
                 modifier = modifier,
@@ -78,6 +74,58 @@ fun <T : TextChipModel> TextChipsRow(
                 onClick = { onClick(chip) }
             )
         }
+    }
+}
+
+@Composable
+fun <T : ImageChipModel> ImageChipsRow(
+    textChips: List<T>,
+    modifier: Modifier = Modifier,
+    shape: Shape = ChipDefaults.DefaultShape,
+    border: BorderStroke? = null,
+    colors: ChipColors = ChipDefaults.buttonColors(),
+    contentPadding: PaddingValues = ChipDefaults.ContentPadding,
+    chipPadding: PaddingValues = ChipDefaults.ChipPaddings,
+    onClick: (textChipModel: T) -> Unit
+) {
+    LazyRow(Modifier.fillMaxWidth()) {
+        items(textChips) { chip ->
+            Chip(
+                textChip = chip,
+                modifier = modifier,
+                shape = shape,
+                border = border,
+                colors = colors,
+                contentPadding = contentPadding,
+                chipPadding = chipPadding,
+                content = {
+                    ChipImage(chip, ImagePosition.LEFT)
+                    Text(text = chip.text)
+                    ChipImage(chip, ImagePosition.RIGHT)
+                },
+                onClick = { onClick(chip) }
+            )
+        }
+    }
+}
+
+@Composable
+fun RowScope.ChipImage(chip: ImageChipModel, position: ImagePosition) {
+    val colorTint = if (chip.isEnable) {
+        chip.image.enableTint
+    } else {
+        chip.image.disableTint
+    }
+
+    if (chip.image.chipImagePosition == position && chip.image.imageRes != null) {
+        Icon(
+            painter = painterResource(id = chip.image.imageRes),
+            tint = colorTint,
+            contentDescription = chip.image.contextDescription,
+            modifier = Modifier
+                .size(chip.image.imageSize)
+                .align(Alignment.CenterVertically)
+        )
     }
 }
 
@@ -97,7 +145,7 @@ fun Chip(
     val isEnable = textChip.isEnable
     val contentColor by colors.contentColor(isEnable)
     val backgroundColor by colors.backgroundColor(isEnable)
-    val borderColor = BorderStroke(1.dp, colors.borderColor(textChip.isEnable).value)
+    val borderColor = colors.borderColor(isEnable).value
     Surface(
         onClick = onClick,
         modifier = modifier.padding(chipPadding),
@@ -105,7 +153,7 @@ fun Chip(
         shape = shape,
         color = backgroundColor,
         contentColor = contentColor.copy(alpha = 1f),
-        border = border ?: borderColor,
+        border = border ?: BorderStroke(1.dp, borderColor),
     ) {
         CompositionLocalProvider(LocalContentAlpha provides contentColor.alpha) {
             ProvideTextStyle(

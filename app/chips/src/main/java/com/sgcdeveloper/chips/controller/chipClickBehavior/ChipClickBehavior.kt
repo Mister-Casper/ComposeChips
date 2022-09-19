@@ -1,6 +1,6 @@
 package com.sgcdeveloper.chips.controller.chipClickBehavior
 
-import com.sgcdeveloper.chips.model.ChipModel
+import com.sgcdeveloper.chips.model.chips.ChipModel
 
 interface ChipClickBehavior {
 

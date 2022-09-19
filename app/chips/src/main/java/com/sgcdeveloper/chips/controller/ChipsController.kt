@@ -2,22 +2,26 @@ package com.sgcdeveloper.chips.controller
 
 import com.sgcdeveloper.chips.controller.chipClickBehavior.ChipClickBehavior
 import com.sgcdeveloper.chips.controller.chipClickBehavior.SingleChipClickBehavior
-import com.sgcdeveloper.chips.model.ChipModel
+import com.sgcdeveloper.chips.model.chips.ChipModel
 
-open class ChipsController<T : ChipModel>(chips: List<T>) {
+open class ChipsController<T : ChipModel>(
+    chips: List<T>,
+    private var chipClickBehavior: ChipClickBehavior = SingleChipClickBehavior(chips)
+) {
 
     private val onChipsChangedListeners: MutableList<OnChipsChangedListener> = mutableListOf()
     protected val chips: MutableList<T> = chips.toMutableList()
 
-    var chipClickBehavior: ChipClickBehavior = SingleChipClickBehavior()
-        set(value) {
-            field = value
-            updateChips(chipClickBehavior.hotInit(chips))
-        }
+    fun resetChipClickBehavior(chipClickBehavior: ChipClickBehavior) {
+        this.chipClickBehavior = chipClickBehavior
+        val updatedChips = chipClickBehavior.hotInit(chips)
+        updateChips(updatedChips)
+    }
 
     open fun onChipClick(chip: T): List<T> {
-        updateChips(chipClickBehavior.onChipClicked(chip, chips))
-        return chips
+        val updatedChips = chipClickBehavior.onChipClicked(chip, chips)
+        updateChips(updatedChips)
+        return chips.toList()
     }
 
     fun addOnChipsChangedListener(listener: OnChipsChangedListener) {
@@ -33,8 +37,6 @@ open class ChipsController<T : ChipModel>(chips: List<T>) {
     fun getEnableChips(): List<T> = chips.filter { it.isEnable }
 
     fun getDisableChips(): List<T> = chips.filter { !it.isEnable }
-
-    fun getChipById(id: String): T? = chips.find { it.id == id }
 
     private fun updateChips(newChips: List<T>) {
         chips.clear()

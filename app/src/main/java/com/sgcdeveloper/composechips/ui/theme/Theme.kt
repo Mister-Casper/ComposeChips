@@ -36,7 +36,7 @@ fun ComposeChipsTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
     }
 
     MaterialTheme(
-        colors = colors,
+        colors = DarkColorPalette,
         typography = Typography,
         shapes = Shapes,
         content = content

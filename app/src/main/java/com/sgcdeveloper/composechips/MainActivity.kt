@@ -7,21 +7,13 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import com.sgcdeveloper.chips.controller.ChipsController
-import com.sgcdeveloper.chips.model.TextChipModel
+import com.sgcdeveloper.chips.ui.ImageChipsRow
 import com.sgcdeveloper.chips.ui.TextChipsRow
 import com.sgcdeveloper.composechips.ui.theme.ComposeChipsTheme
-import kotlin.reflect.KProperty
 
 class MainActivity : ComponentActivity() {
 
@@ -34,26 +26,33 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                     Column(Modifier.fillMaxWidth()) {
 
-                        val textChips = mainViewModel.singleActiveItemChips.observeAsState()
-                        val textMultiNoLimitChips = mainViewModel.multiNoLimitsItemClick.observeAsState()
-                        val textMultiLimitChips = mainViewModel.multiItemClick.observeAsState()
+                        val textChips = mainViewModel.singleActiveItemChips.observeAsState(emptyList())
+                        val textMultiNoLimitChips = mainViewModel.multiNoLimitsItemChip.observeAsState(emptyList())
+                        val textMultiLimitChips = mainViewModel.multiItemChip.observeAsState(emptyList())
+                        val imageSingleChip = mainViewModel.singleImageChip.observeAsState(emptyList())
 
                         TextChipsRow(
-                            textChips = textChips.value ?: emptyList(),
+                            textChips = textChips.value,
                             onClick = { chipText ->
                                 mainViewModel.onSingleItemClick(chipText)
                             }
                         )
                         TextChipsRow(
-                            textChips = textMultiNoLimitChips.value ?: emptyList(),
+                            textChips = textMultiNoLimitChips.value,
                             onClick = { chipText ->
                                 mainViewModel.onMultiItemNoLimitClick(chipText)
                             }
                         )
                         TextChipsRow(
-                            textChips = textMultiLimitChips.value ?: emptyList(),
+                            textChips = textMultiLimitChips.value,
                             onClick = { chipText ->
                                 mainViewModel.onMultiItemClick(chipText)
+                            }
+                        )
+                        ImageChipsRow(
+                            textChips = imageSingleChip.value,
+                            onClick = { chipText ->
+                                mainViewModel.onSingleImageClick(chipText)
                             }
                         )
                     }

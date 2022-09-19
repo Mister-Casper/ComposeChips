@@ -1,11 +1,15 @@
 package com.sgcdeveloper.chips.controller.chipClickBehavior
 
-import com.sgcdeveloper.chips.model.ChipModel
+import com.sgcdeveloper.chips.model.chips.ChipModel
 
-class SingleChipClickBehavior : ChipClickBehavior {
+class SingleChipClickBehavior(chips: List<ChipModel>) : ChipClickBehavior {
+
+    init {
+        hotInit(chips)
+    }
 
     override fun <T : ChipModel> onChipClicked(chip: T, allChips: List<T>): List<T> {
-        return allChips.map { item -> item.copy(isEnable = (item.id == chip.id)) as T }
+        return allChips.map { item -> item.copy(isEnable = (item == chip)) as T }
     }
 
     override fun <T : ChipModel> hotInit(allChips: List<T>): List<T> {
