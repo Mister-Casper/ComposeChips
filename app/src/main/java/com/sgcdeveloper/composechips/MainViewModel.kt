@@ -20,6 +20,7 @@ class MainViewModel : ViewModel() {
     private val chipsControllerMulti =
         ChipsController(chips, LimitedMultiChipsClickBehavior(MaxChipsLimit(2)))
     private val chipsControllerImages = ChipsController(imagePics)
+    private val gridChipsController = ChipsController(chips)
 
     private val _singleActiveItemChips: MutableLiveData<List<TextChipModel>> =
         MutableLiveData(chipsController.getAllChips())
@@ -37,6 +38,10 @@ class MainViewModel : ViewModel() {
         MutableLiveData(chipsControllerImages.getAllChips())
     val singleImageChip: LiveData<List<ImageChipModel>> = _singleImageChip
 
+    private val _gridChips: MutableLiveData<List<TextChipModel>> =
+        MutableLiveData(gridChipsController.getAllChips())
+    val gridChips: LiveData<List<TextChipModel>> = _gridChips
+
     fun onSingleItemClick(chipModel: TextChipModel) {
         _singleActiveItemChips.value = chipsController.onChipClick(chipModel)
     }
@@ -51,6 +56,10 @@ class MainViewModel : ViewModel() {
 
     fun onSingleImageClick(chipModel: ImageChipModel) {
         _singleImageChip.value = chipsControllerImages.onChipClick(chipModel)
+    }
+
+    fun onGridItemClick(chipModel: TextChipModel) {
+        _gridChips.value = gridChipsController.onChipClick(chipModel)
     }
 
     private companion object {

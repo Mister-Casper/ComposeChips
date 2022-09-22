@@ -7,7 +7,7 @@ class LimitedMultiChipsClickBehavior(private val maxChipsLimit: MaxChipsLimit? =
 
     override fun <T : ChipModel> onChipClicked(chip: T, allChips: List<T>): List<T> {
         maxChipsLimit?.addChip(chip)
-        val enabledChips = maxChipsLimit?.getEnabledChips() ?: emptyList()
+        val enabledChips = maxChipsLimit?.getEnabledChips<T>() ?: emptyList()
         return allChips.map { item ->
             val enabledChip = item.copy(isEnable = true) as T
             val isEnable = enabledChips.contains(enabledChip)

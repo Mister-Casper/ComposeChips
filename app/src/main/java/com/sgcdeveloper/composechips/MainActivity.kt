@@ -11,7 +11,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import com.sgcdeveloper.chips.ui.ChipsGrid
 import com.sgcdeveloper.chips.ui.ImageChipsRow
+import com.sgcdeveloper.chips.ui.TextChipsGrid
 import com.sgcdeveloper.chips.ui.TextChipsRow
 import com.sgcdeveloper.composechips.ui.theme.ComposeChipsTheme
 
@@ -23,13 +25,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeChipsTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
                     Column(Modifier.fillMaxWidth()) {
 
-                        val textChips = mainViewModel.singleActiveItemChips.observeAsState(emptyList())
-                        val textMultiNoLimitChips = mainViewModel.multiNoLimitsItemChip.observeAsState(emptyList())
-                        val textMultiLimitChips = mainViewModel.multiItemChip.observeAsState(emptyList())
-                        val imageSingleChip = mainViewModel.singleImageChip.observeAsState(emptyList())
+                        val textChips =
+                            mainViewModel.singleActiveItemChips.observeAsState(emptyList())
+                        val textMultiNoLimitChips =
+                            mainViewModel.multiNoLimitsItemChip.observeAsState(emptyList())
+                        val textMultiLimitChips =
+                            mainViewModel.multiItemChip.observeAsState(emptyList())
+                        val imageSingleChip =
+                            mainViewModel.singleImageChip.observeAsState(emptyList())
+                        val gridChips = mainViewModel.gridChips.observeAsState(emptyList())
 
                         TextChipsRow(
                             textChips = textChips.value,
@@ -55,6 +65,9 @@ class MainActivity : ComponentActivity() {
                                 mainViewModel.onSingleImageClick(chipText)
                             }
                         )
+                        TextChipsGrid(chips = gridChips.value, onClick = { chipText ->
+                            mainViewModel.onGridItemClick(chipText)
+                        })
                     }
                 }
             }
