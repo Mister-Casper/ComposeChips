@@ -2,7 +2,7 @@ package com.sgcdeveloper.chips.controller.chipClickBehavior
 
 import com.sgcdeveloper.chips.model.chips.ChipModel
 
-class MultipleChipsClickBehavior() : ChipClickBehavior {
+class MultipleChipsClickBehavior : ChipClickBehavior {
 
     override fun <T : ChipModel> onChipClicked(chip: T, allChips: List<T>): List<T> {
         return allChips.map { item ->
@@ -15,7 +15,7 @@ class MultipleChipsClickBehavior() : ChipClickBehavior {
     }
 
     override fun <T : ChipModel> hotInit(allChips: List<T>): List<T> {
-        return allChips.toList()
+        return allChips
     }
 
 }

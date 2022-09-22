@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                         ImageChipsRow(
-                            textChips = imageSingleChip.value,
+                            imageChips = imageSingleChip.value,
                             onClick = { chipText ->
                                 mainViewModel.onSingleImageClick(chipText)
                             }

@@ -4,10 +4,10 @@ import com.sgcdeveloper.chips.model.chips.ChipModel
 
 interface ChipsLimit {
 
-    fun addChip(chip: ChipModel)
+    fun <T : ChipModel> addChip(chip: T)
 
-    fun getEnabledChips(): List<ChipModel>
+    fun <T : ChipModel> getEnabledChips(): List<T>
 
-    fun hotInit(allChips: List<ChipModel>)
+    fun <T : ChipModel> hotInit(allChips: List<T>)
 
 }

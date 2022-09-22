@@ -10,5 +10,6 @@ data class ChipImage(
     val enableTint: Color = Color.Unspecified,
     val disableTint: Color = Color.Unspecified,
     val contextDescription: String? = "Chip image",
-    val imageSize: Dp = 16.dp
+    val imageSize: Dp = 16.dp,
+    val padding: Dp = 8.dp
 )

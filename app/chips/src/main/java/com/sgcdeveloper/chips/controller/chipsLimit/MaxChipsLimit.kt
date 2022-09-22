@@ -8,7 +8,7 @@ open class MaxChipsLimit(
 
     private val chipsQueue = ArrayDeque<ChipModel>()
 
-    override fun addChip(chip: ChipModel) {
+    override fun <T : ChipModel> addChip(chip: T) {
         if (isChipLimitReached(chip)) {
             chipsQueue.removeLast()
         }
@@ -20,11 +20,11 @@ open class MaxChipsLimit(
         }
     }
 
-    override fun getEnabledChips(): List<ChipModel> {
-        return chipsQueue.toList()
+    override fun <T : ChipModel> getEnabledChips(): List<T> {
+        return chipsQueue.toList() as List<T>
     }
 
-    override fun hotInit(allChips: List<ChipModel>) {
+    override fun <T : ChipModel> hotInit(allChips: List<T>) {
         val enabledChips = allChips.filter { it.isEnable }
         if (enabledChips != chipsQueue) {
             chipsQueue.clear()

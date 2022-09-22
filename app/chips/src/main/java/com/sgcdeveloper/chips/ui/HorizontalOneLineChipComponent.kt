@@ -20,20 +20,20 @@ import com.sgcdeveloper.chips.model.chips.imageChip.ImageChipModel
 
 @Composable
 fun <T : ChipModel> ChipsRow(
-    textChips: List<T>,
+    chips: List<T>,
     modifier: Modifier = Modifier,
     shape: Shape = ChipDefaults.DefaultShape,
     border: BorderStroke? = null,
     colors: ChipColors = ChipDefaults.buttonColors(),
     contentPadding: PaddingValues = ChipDefaults.ContentPadding,
-    content: @Composable RowScope.() -> Unit,
+    content: @Composable RowScope.(chipModel: ChipModel) -> Unit,
     chipPadding: PaddingValues = ChipDefaults.ChipPaddings,
     onClick: (chipModel: T) -> Unit
 ) {
     LazyRow(Modifier.fillMaxWidth()) {
-        items(textChips) { chip ->
+        items(chips, key = { it.id }) { chip ->
             Chip(
-                textChip = chip,
+                chip = chip,
                 modifier = modifier,
                 shape = shape,
                 border = border,
@@ -59,9 +59,9 @@ fun <T : TextChipModel> TextChipsRow(
     onClick: (textChipModel: T) -> Unit
 ) {
     LazyRow(Modifier.fillMaxWidth()) {
-        items(textChips, key = {it.id}) { chip ->
+        items(textChips, key = { it.id }) { chip ->
             Chip(
-                textChip = chip,
+                chip = chip,
                 modifier = modifier,
                 shape = shape,
                 border = border,
@@ -77,7 +77,7 @@ fun <T : TextChipModel> TextChipsRow(
 
 @Composable
 fun <T : ImageChipModel> ImageChipsRow(
-    textChips: List<T>,
+    imageChips: List<T>,
     modifier: Modifier = Modifier,
     shape: Shape = ChipDefaults.DefaultShape,
     border: BorderStroke? = null,
@@ -87,9 +87,9 @@ fun <T : ImageChipModel> ImageChipsRow(
     onClick: (textChipModel: T) -> Unit
 ) {
     LazyRow(Modifier.fillMaxWidth()) {
-        items(textChips) { chip ->
+        items(imageChips, key = { it.id }) { chip ->
             Chip(
-                textChip = chip,
+                chip = chip,
                 modifier = modifier,
                 shape = shape,
                 border = border,
@@ -98,7 +98,9 @@ fun <T : ImageChipModel> ImageChipsRow(
                 chipPadding = chipPadding,
                 content = {
                     ChipImage(chip.leftImage, chip.isEnable)
+                    Spacer(modifier = Modifier.width(chip.leftImage?.padding ?: 0.dp))
                     Text(text = chip.text)
+                    Spacer(modifier = Modifier.width(chip.rightImage?.padding ?: 0.dp))
                     ChipImage(chip.rightImage, chip.isEnable)
                 },
                 onClick = { onClick(chip) }
@@ -130,7 +132,7 @@ fun RowScope.ChipImage(chipImage: ChipImage?, isEnable: Boolean) {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Chip(
-    textChip: ChipModel,
+    chip: ChipModel,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = ChipDefaults.DefaultShape,
@@ -138,12 +140,12 @@ fun Chip(
     border: BorderStroke?,
     contentPadding: PaddingValues = ChipDefaults.ContentPadding,
     chipPadding: PaddingValues = ChipDefaults.ChipPaddings,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.(chipModel: ChipModel) -> Unit
 ) {
-    val isEnable = textChip.isEnable
+    val isEnable = chip.isEnable
     val contentColor by colors.contentColor(isEnable)
     val backgroundColor by colors.backgroundColor(isEnable)
-    val borderColor = colors.borderColor(isEnable).value
+    val borderColor by colors.borderColor(isEnable)
     Surface(
         onClick = onClick,
         modifier = modifier.padding(chipPadding),
@@ -151,7 +153,7 @@ fun Chip(
         shape = shape,
         color = backgroundColor,
         contentColor = contentColor.copy(alpha = 1f),
-        border = border ?: BorderStroke(1.dp, borderColor),
+        border = border ?: BorderStroke(1.dp, borderColor)
     ) {
         CompositionLocalProvider(LocalContentAlpha provides contentColor.alpha) {
             ProvideTextStyle(
@@ -166,7 +168,7 @@ fun Chip(
                         .padding(contentPadding),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    content = content
+                    content = { content(chip) }
                 )
             }
         }

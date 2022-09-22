@@ -17,7 +17,7 @@ class LimitedMultiChipsClickBehavior(private val maxChipsLimit: MaxChipsLimit? =
 
     override fun <T : ChipModel> hotInit(allChips: List<T>): List<T> {
         maxChipsLimit?.hotInit(allChips)
-        return allChips.toList()
+        return allChips
     }
 
 }
