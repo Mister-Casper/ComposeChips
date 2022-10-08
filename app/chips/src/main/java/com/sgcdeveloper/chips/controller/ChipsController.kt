@@ -10,18 +10,18 @@ open class ChipsController<T : ChipModel>(
 ) {
 
     private val onChipsChangedListeners: MutableList<OnChipsChangedListener> = mutableListOf()
-    private var chips: List<T> = getIdenticalChips(chips)
+    private var identifiedChips: List<T> = chips.getIdentifiedChips()
+
+    open fun onChipClick(chip: T): List<T> {
+        val updatedChips = chipClickBehavior.onChipClicked(chip, identifiedChips)
+        updateChips(updatedChips)
+        return identifiedChips
+    }
 
     fun resetChipClickBehavior(chipClickBehavior: ChipClickBehavior) {
         this.chipClickBehavior = chipClickBehavior
-        val updatedChips = chipClickBehavior.hotInit(chips)
+        val updatedChips = chipClickBehavior.hotInit(identifiedChips)
         updateChips(updatedChips)
-    }
-
-    open fun onChipClick(chip: T): List<T> {
-        val updatedChips = chipClickBehavior.onChipClicked(chip, chips)
-        updateChips(updatedChips)
-        return chips
     }
 
     fun addOnChipsChangedListener(listener: OnChipsChangedListener) {
@@ -32,34 +32,39 @@ open class ChipsController<T : ChipModel>(
         onChipsChangedListeners.remove(listener)
     }
 
-    fun getAllChips(): List<T> = chips.toList()
+    fun getAllChips(): List<T> = identifiedChips.toList()
 
-    fun getEnableChips(): List<T> = chips.filter { it.isEnable }
+    fun getEnableChips(): List<T> = identifiedChips.filter { it.isEnable }
 
-    fun getDisableChips(): List<T> = chips.filter { !it.isEnable }
+    fun getDisableChips(): List<T> = identifiedChips.filter { !it.isEnable }
+
+    fun setChips(chips: List<T>) {
+        val updatedChips = chipClickBehavior.hotInit(chips.getIdentifiedChips())
+        updateChips(updatedChips)
+    }
 
     private fun updateChips(newChips: List<T>) {
-        chips = newChips
+        identifiedChips = newChips
         notifyOnChipsChanged()
     }
 
     private fun notifyOnChipsChanged() {
         onChipsChangedListeners.forEach { listener ->
-            listener.onChipsChanged(chips)
+            listener.onChipsChanged(identifiedChips)
         }
     }
+}
 
-    private fun getIdenticalChips(chips: List<T>): MutableList<T> {
-        return if (isAllChipsIdUnique(chips)) {
-            chips.toMutableList()
-        } else {
-            chips.mapIndexed { index, chip -> chip.copy(id = index.toString()) as T }
-                .toMutableList()
-        }
+fun <T : ChipModel> List<T>.getIdentifiedChips(): List<T> {
+    return if (isAllChipsIdUnique(this)) {
+        this.toMutableList()
+    } else {
+        this.mapIndexed { index, chip -> chip.copy(id = index.toString()) as T }
+            .toMutableList()
     }
+}
 
-    private fun isAllChipsIdUnique(chips: List<T>): Boolean {
-        val chipsId = chips.map { it.id }
-        return chipsId.all { it != chipsId.first() }
-    }
+private fun <T : ChipModel> isAllChipsIdUnique(chips: List<T>): Boolean {
+    val chipsId = chips.map { it.id }
+    return chipsId.all { it != chipsId.first() }
 }

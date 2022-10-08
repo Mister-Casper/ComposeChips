@@ -16,7 +16,7 @@ open class MaxChipsLimit(
         if (chip.isEnable) {
             chipsQueue.remove(chip)
         } else {
-            chipsQueue.addFirst(chip.copy(isEnable = true))
+            chipsQueue.addFirst(chip)
         }
     }
 
@@ -24,11 +24,16 @@ open class MaxChipsLimit(
         return chipsQueue.toList() as List<T>
     }
 
-    override fun <T : ChipModel> hotInit(allChips: List<T>) {
+    override fun <T : ChipModel> hotInit(allChips: List<T>): List<T> {
         val enabledChips = allChips.filter { it.isEnable }
-        if (enabledChips != chipsQueue) {
+        return if (enabledChips.map { it.id } != chipsQueue.map { it.id }) {
+            val limitedEnableChips =
+                enabledChips.subList(0, kotlin.math.min(maxChips, enabledChips.size))
             chipsQueue.clear()
-            chipsQueue.addAll(enabledChips.reversed().map { it })
+            chipsQueue.addAll(limitedEnableChips.reversed().map { it })
+            allChips.map { it.copy(isEnable = chipsQueue.contains(it)) }
+        } else {
+            allChips
         }
     }
 

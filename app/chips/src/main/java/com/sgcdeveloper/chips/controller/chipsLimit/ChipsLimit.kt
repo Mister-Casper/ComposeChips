@@ -8,6 +8,6 @@ interface ChipsLimit {
 
     fun <T : ChipModel> getEnabledChips(): List<T>
 
-    fun <T : ChipModel> hotInit(allChips: List<T>)
+    fun <T : ChipModel> hotInit(allChips: List<T>): List<T>
 
 }
