@@ -1,4 +1,4 @@
-package com.sgcdeveloper.composechips
+package com.sgcdeveloper.composechips.controller.chipsLimit
 
 import com.sgcdeveloper.chips.controller.chipsLimit.MaxChipsLimit
 import com.sgcdeveloper.chips.model.chips.ChipModel
@@ -65,6 +65,29 @@ class MaxChipsLimitTest {
         assert(updatedLimitedChips[1] == chips[1])
         assert(updatedLimitedChips[0] == chips[2])
         assert(limitedChips == updatedLimitedChips)
+    }
+
+    @Test
+    fun check_hot_init_with_new_enabled_items() {
+        maxChipsLimit.addChip(chips[0])
+        maxChipsLimit.addChip(chips[1])
+        maxChipsLimit.addChip(chips[2])
+        val limitedChips = maxChipsLimit.getEnabledChips<ChipModel>()
+        assert(limitedChips[2] == chips[0])
+        assert(limitedChips[1] == chips[1])
+        assert(limitedChips[0] == chips[2])
+        maxChipsLimit.hotInit(
+            listOf(
+                chips[0].copy(isEnable = true),
+                chips[1].copy(isEnable = true),
+                chips[2].copy(isEnable = true),
+                chips[3].copy(isEnable = true)
+            )
+        )
+        val updatedLimitedChips = maxChipsLimit.getEnabledChips<ChipModel>()
+        assert(updatedLimitedChips[2] == chips[0].copy(isEnable = true))
+        assert(updatedLimitedChips[1] == chips[1].copy(isEnable = true))
+        assert(updatedLimitedChips[0] == chips[2].copy(isEnable = true))
     }
 
 

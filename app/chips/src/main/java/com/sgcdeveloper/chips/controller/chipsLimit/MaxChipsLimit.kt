@@ -30,7 +30,7 @@ open class MaxChipsLimit(
             val limitedEnableChips =
                 enabledChips.subList(0, kotlin.math.min(maxChips, enabledChips.size))
             chipsQueue.clear()
-            chipsQueue.addAll(limitedEnableChips.reversed().map { it })
+            chipsQueue.addAll(limitedEnableChips.map { it })
             allChips.map { it.copy(isEnable = chipsQueue.contains(it)) }
         } else {
             allChips
