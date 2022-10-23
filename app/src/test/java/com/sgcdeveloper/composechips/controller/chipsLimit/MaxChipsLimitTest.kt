@@ -9,13 +9,13 @@ import org.junit.Test
 class MaxChipsLimitTest {
 
     private val chips = listOf(
-        TextChipModel(isActive = false, text = "A".toText()),
-        TextChipModel(isActive = false, text = "B".toText()),
-        TextChipModel(isActive = false, text = "C".toText()),
-        TextChipModel(isActive = false, text = "D".toText()),
-        TextChipModel(isActive = false, text = "E".toText()),
-        TextChipModel(isActive = false, text = "F".toText()),
-        TextChipModel(isActive = false, text = "G".toText()),
+        TextChipModel(isEnable = false, text = "A".toText()),
+        TextChipModel(isEnable = false, text = "B".toText()),
+        TextChipModel(isEnable = false, text = "C".toText()),
+        TextChipModel(isEnable = false, text = "D".toText()),
+        TextChipModel(isEnable = false, text = "E".toText()),
+        TextChipModel(isEnable = false, text = "F".toText()),
+        TextChipModel(isEnable = false, text = "G".toText()),
     )
 
     private val maxChipsLimit = MaxChipsLimit(3)
@@ -89,6 +89,4 @@ class MaxChipsLimitTest {
         assert(updatedLimitedChips[1] == chips[1].copy(isEnable = true))
         assert(updatedLimitedChips[0] == chips[2].copy(isEnable = true))
     }
-
-
 }

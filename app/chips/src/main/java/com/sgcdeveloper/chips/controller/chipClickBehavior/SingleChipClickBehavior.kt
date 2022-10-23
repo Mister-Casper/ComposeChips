@@ -2,11 +2,7 @@ package com.sgcdeveloper.chips.controller.chipClickBehavior
 
 import com.sgcdeveloper.chips.model.chips.ChipModel
 
-class SingleChipClickBehavior(chips: List<ChipModel>) : ChipClickBehavior {
-
-    init {
-        hotInit(chips)
-    }
+class SingleChipClickBehavior : ChipClickBehavior {
 
     override fun <T : ChipModel> onChipClicked(chip: T, allChips: List<T>): List<T> {
         return allChips.map { item -> item.copy(isEnable = (item == chip)) as T }
@@ -31,5 +27,6 @@ class SingleChipClickBehavior(chips: List<ChipModel>) : ChipClickBehavior {
         return !isOnlyOneChipEnable && chip.isEnable
     }
 
-    private fun isNotOnlyOneChipEnable(chips: List<ChipModel>) = chips.filter { it.isEnable }.size > 1
+    private fun isNotOnlyOneChipEnable(chips: List<ChipModel>) =
+        chips.filter { it.isEnable }.size > 1
 }

@@ -6,7 +6,7 @@ import com.sgcdeveloper.chips.model.chips.ChipModel
 
 open class ChipsController<T : ChipModel>(
     chips: List<T>,
-    private var chipClickBehavior: ChipClickBehavior = SingleChipClickBehavior(chips)
+    private var chipClickBehavior: ChipClickBehavior = SingleChipClickBehavior()
 ) {
 
     private val onChipsChangedListeners: MutableList<OnChipsChangedListener> = mutableListOf()
