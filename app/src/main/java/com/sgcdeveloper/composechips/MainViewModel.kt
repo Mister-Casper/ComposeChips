@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sgcdeveloper.chips.controller.ChipsController
 import com.sgcdeveloper.chips.controller.chipClickBehavior.LimitedMultiChipsClickBehavior
-import com.sgcdeveloper.chips.controller.chipClickBehavior.MultipleChipsClickBehavior
 import com.sgcdeveloper.chips.controller.chipsLimit.MaxChipsLimit
 import com.sgcdeveloper.chips.model.chips.TextChipModel
 import com.sgcdeveloper.chips.model.chips.imageChip.ChipImage
@@ -16,7 +15,7 @@ import com.sgcdeveloper.chips.model.toText
 class MainViewModel : ViewModel() {
 
     private val chipsController = ChipsController(chips)
-    private val chipsControllerMultiNoLimits = ChipsController(chips, MultipleChipsClickBehavior())
+    private val chipsControllerMultiNoLimits = ChipsController(chips, LimitedMultiChipsClickBehavior())
     private val chipsControllerMulti =
         ChipsController(chips, LimitedMultiChipsClickBehavior(MaxChipsLimit(2)))
     private val chipsControllerImages = ChipsController(imagePics)

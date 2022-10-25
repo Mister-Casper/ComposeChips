@@ -14,7 +14,7 @@ open class MaxChipsLimit(
         }
 
         if (chip.isEnable) {
-            chipsQueue.remove(chip)
+            chipsQueue.remove(chip.copy(isEnable = false))
         } else {
             chipsQueue.addFirst(chip)
         }
