@@ -12,16 +12,24 @@ open class ChipsController<T : ChipModel>(
     private val onChipsChangedListeners: MutableList<OnChipsChangedListener> = mutableListOf()
     private var identifiedChips: List<T> = chips.getIdentifiedChips()
 
+    open fun onChipClick(chipIndex: Int): List<T> {
+        val updatedChips =
+            chipClickBehavior.onChipClicked(identifiedChips[chipIndex], identifiedChips)
+        updateChips(updatedChips)
+        return identifiedChips
+    }
+
     open fun onChipClick(chip: T): List<T> {
         val updatedChips = chipClickBehavior.onChipClicked(chip, identifiedChips)
         updateChips(updatedChips)
         return identifiedChips
     }
 
-    fun resetChipClickBehavior(chipClickBehavior: ChipClickBehavior) {
+    fun resetChipClickBehavior(chipClickBehavior: ChipClickBehavior): List<T> {
         this.chipClickBehavior = chipClickBehavior
         val updatedChips = chipClickBehavior.hotInit(identifiedChips)
         updateChips(updatedChips)
+        return updatedChips
     }
 
     fun addOnChipsChangedListener(listener: OnChipsChangedListener) {
@@ -66,5 +74,5 @@ fun <T : ChipModel> List<T>.getIdentifiedChips(): List<T> {
 
 private fun <T : ChipModel> isAllChipsIdUnique(chips: List<T>): Boolean {
     val chipsId = chips.map { it.id }
-    return chipsId.all { it != chipsId.first() }
+    return chipsId.toSet().size == chips.size
 }

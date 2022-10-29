@@ -38,6 +38,10 @@ class MainActivity : ComponentActivity() {
                     val imageSingleChip =
                         mainViewModel.singleImageChip.observeAsState(emptyList())
                     val gridChips = mainViewModel.gridChips.observeAsState(emptyList())
+                    val controllerBehaviorChips =
+                        mainViewModel.controllerBehaviorChips.observeAsState(emptyList())
+                    val anyBehaviorChips =
+                        mainViewModel.anyBehaviorChips.observeAsState(emptyList())
 
                     LazyColumn(Modifier.fillMaxWidth()) {
                         item {
@@ -68,6 +72,24 @@ class MainActivity : ComponentActivity() {
                             TextChipsGrid(chips = gridChips.value, onClick = { chipText ->
                                 mainViewModel.onGridItemClick(chipText)
                             })
+                            TextChipsRow(
+                                textChips = textMultiLimitChips.value,
+                                onClick = { chipText ->
+                                    mainViewModel.onMultiItemClick(chipText)
+                                }
+                            )
+                            TextChipsRow(
+                                textChips = controllerBehaviorChips.value,
+                                onClick = { chipText ->
+                                    mainViewModel.onControllerBehaviorChipsClick(chipText)
+                                }
+                            )
+                            TextChipsRow(
+                                textChips = anyBehaviorChips.value,
+                                onClick = { chipText ->
+                                    mainViewModel.onAnyBehaviorChipsClick(chipText)
+                                }
+                            )
                         }
                     }
                 }

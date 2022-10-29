@@ -1,11 +1,11 @@
 package com.sgcdeveloper.composechips.controller.chipClickBehavior
 
-import com.sgcdeveloper.chips.controller.chipClickBehavior.LimitedMultiChipsClickBehavior
+import com.sgcdeveloper.chips.controller.chipClickBehavior.MultiChipsClickBehavior
 import com.sgcdeveloper.chips.model.chips.TextChipModel
 import com.sgcdeveloper.chips.model.toText
 import org.junit.Test
 
-class LimitedMultiChipsClickBehaviorTest {
+class MultiChipsClickBehaviorTest {
 
     private val chips = listOf(
         TextChipModel(isEnable = false, text = "A".toText(), id = "A"),
@@ -17,7 +17,7 @@ class LimitedMultiChipsClickBehaviorTest {
         TextChipModel(isEnable = false, text = "G".toText(), id = "G"),
     )
 
-    private val multipleChipsClickBehavior = LimitedMultiChipsClickBehavior()
+    private val multipleChipsClickBehavior = MultiChipsClickBehavior()
 
     @Test
     fun check_click_first_chip() {

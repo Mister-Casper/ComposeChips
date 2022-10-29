@@ -3,7 +3,7 @@ package com.sgcdeveloper.chips.controller.chipClickBehavior
 import com.sgcdeveloper.chips.controller.chipsLimit.MaxChipsLimit
 import com.sgcdeveloper.chips.model.chips.ChipModel
 
-class LimitedMultiChipsClickBehavior(private val maxChipsLimit: MaxChipsLimit? = null) :
+class MultiChipsClickBehavior(private val maxChipsLimit: MaxChipsLimit? = null) :
     ChipClickBehavior {
 
     override fun <T : ChipModel> onChipClicked(chip: T, allChips: List<T>): List<T> {

@@ -5,7 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sgcdeveloper.chips.controller.ChipsController
-import com.sgcdeveloper.chips.controller.chipClickBehavior.LimitedMultiChipsClickBehavior
+import com.sgcdeveloper.chips.controller.chipClickBehavior.MultiChipsClickBehavior
+import com.sgcdeveloper.chips.controller.chipClickBehavior.SingleChipClickBehavior
 import com.sgcdeveloper.chips.controller.chipsLimit.MaxChipsLimit
 import com.sgcdeveloper.chips.model.chips.TextChipModel
 import com.sgcdeveloper.chips.model.chips.imageChip.ChipImage
@@ -15,11 +16,13 @@ import com.sgcdeveloper.chips.model.toText
 class MainViewModel : ViewModel() {
 
     private val chipsController = ChipsController(chips)
-    private val chipsControllerMultiNoLimits = ChipsController(chips, LimitedMultiChipsClickBehavior())
+    private val chipsControllerMultiNoLimits = ChipsController(chips, MultiChipsClickBehavior())
     private val chipsControllerMulti =
-        ChipsController(chips, LimitedMultiChipsClickBehavior(MaxChipsLimit(2)))
+        ChipsController(chips, MultiChipsClickBehavior(MaxChipsLimit(2)))
     private val chipsControllerImages = ChipsController(imagePics)
     private val gridChipsController = ChipsController(chips)
+    private val behaviorChipsController = ChipsController(behaviorChips)
+    private val anyBehaviorChipsController = ChipsController(chips)
 
     private val _singleActiveItemChips: MutableLiveData<List<TextChipModel>> =
         MutableLiveData(chipsController.getAllChips())
@@ -41,6 +44,14 @@ class MainViewModel : ViewModel() {
         MutableLiveData(gridChipsController.getAllChips())
     val gridChips: LiveData<List<TextChipModel>> = _gridChips
 
+    private val _controllerBehaviorChips: MutableLiveData<List<TextChipModel>> =
+        MutableLiveData(behaviorChipsController.getAllChips())
+    val controllerBehaviorChips: LiveData<List<TextChipModel>> = _controllerBehaviorChips
+
+    private val _anyBehaviorChips: MutableLiveData<List<TextChipModel>> =
+        MutableLiveData(anyBehaviorChipsController.getAllChips())
+    val anyBehaviorChips: LiveData<List<TextChipModel>> = _anyBehaviorChips
+
     fun onSingleItemClick(chipModel: TextChipModel) {
         _singleActiveItemChips.value = chipsController.onChipClick(chipModel)
     }
@@ -61,7 +72,34 @@ class MainViewModel : ViewModel() {
         _gridChips.value = gridChipsController.onChipClick(chipModel)
     }
 
+    fun onControllerBehaviorChipsClick(chipModel: TextChipModel) {
+        when (chipModel.id) {
+            "1" -> {
+                _anyBehaviorChips.value =
+                    anyBehaviorChipsController.resetChipClickBehavior(SingleChipClickBehavior())
+            }
+            "2" -> {
+                _anyBehaviorChips.value =
+                    anyBehaviorChipsController.resetChipClickBehavior(MultiChipsClickBehavior())
+            }
+            "3" -> {
+                _anyBehaviorChips.value =
+                    anyBehaviorChipsController.resetChipClickBehavior(MultiChipsClickBehavior(MaxChipsLimit(2)))
+            }
+        }
+        _controllerBehaviorChips.value = behaviorChipsController.onChipClick(chipModel)
+    }
+
+    fun onAnyBehaviorChipsClick(chipModel: TextChipModel) {
+        _anyBehaviorChips.value = anyBehaviorChipsController.onChipClick(chipModel)
+    }
+
     private companion object {
+        private val behaviorChips = listOf(
+            TextChipModel(isEnable = true, text = "Single".toText(), id = "1"),
+            TextChipModel(isEnable = false, text = "Multi".toText(), id = "2"),
+            TextChipModel(isEnable = false, text = "Multi with limit".toText(), id = "3"),
+        )
         private val chips = listOf(
             TextChipModel(isEnable = false, text = "Chip 1".toText()),
             TextChipModel(isEnable = false, text = "Chip 2".toText()),
