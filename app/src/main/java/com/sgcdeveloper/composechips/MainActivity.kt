@@ -90,6 +90,7 @@ class MainActivity : ComponentActivity() {
                                     mainViewModel.onAnyBehaviorChipsClick(chipText)
                                 }
                             )
+                            
                         }
                     }
                 }
