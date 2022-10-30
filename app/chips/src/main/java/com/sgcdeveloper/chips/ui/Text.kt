@@ -9,6 +9,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import com.sgcdeveloper.chips.model.AnnotatedText
 import com.sgcdeveloper.chips.model.ResArgsText
 import com.sgcdeveloper.chips.model.ResText
@@ -23,7 +25,8 @@ fun Text(
     color: Color = Color.Unspecified,
     maxLines: Int = Int.MAX_VALUE,
     textAlign: TextAlign? = null,
-    overflow: TextOverflow = TextOverflow.Clip
+    overflow: TextOverflow = TextOverflow.Clip,
+    fontSize: TextUnit = 14.sp
 ) {
     val textValue = when (text) {
         is AnnotatedText -> text.annotatedString
@@ -40,7 +43,8 @@ fun Text(
                 style = style,
                 maxLines = maxLines,
                 overflow = overflow,
-                textAlign = textAlign
+                textAlign = textAlign,
+                fontSize = fontSize
             )
         }
 
@@ -52,7 +56,8 @@ fun Text(
                 style = style,
                 maxLines = maxLines,
                 overflow = overflow,
-                textAlign = textAlign
+                textAlign = textAlign,
+                fontSize = fontSize
             )
         }
     }

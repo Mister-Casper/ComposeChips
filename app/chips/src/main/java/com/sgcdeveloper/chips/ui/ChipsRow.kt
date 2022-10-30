@@ -7,7 +7,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.sgcdeveloper.chips.model.chips.ChipModel
 import com.sgcdeveloper.chips.model.chips.TextChipModel
 import com.sgcdeveloper.chips.model.chips.imageChip.ImageChipModel
@@ -50,6 +52,7 @@ fun <T : TextChipModel> TextChipsRow(
     colors: ChipColors = ChipDefaults.chipColors(),
     contentPadding: PaddingValues = ChipDefaults.ContentPadding,
     chipPadding: PaddingValues = ChipDefaults.ChipPaddings,
+    fontSize: TextUnit = 14.sp,
     onClick: (textChipModel: T) -> Unit
 ) {
     ChipsRow(
@@ -60,7 +63,7 @@ fun <T : TextChipModel> TextChipsRow(
         colors = colors,
         contentPadding = contentPadding,
         chipPadding = chipPadding,
-        content = { chip -> Text(text = chip.text) },
+        content = { chip -> Text(text = chip.text, fontSize = fontSize) },
         onClick = { chip -> onClick(chip) }
     )
 }
