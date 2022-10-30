@@ -37,7 +37,7 @@ object ChipDefaults {
     val MinHeight = 36.dp
 
     @Composable
-    fun buttonColors(
+    fun chipColors(
         backgroundColor: Color = MaterialTheme.colors.primary,
         contentColor: Color =  MaterialTheme.colors.onSurface,
         disabledBackgroundColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f)

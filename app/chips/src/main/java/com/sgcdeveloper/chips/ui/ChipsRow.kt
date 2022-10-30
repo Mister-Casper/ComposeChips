@@ -18,7 +18,7 @@ fun <T : ChipModel> ChipsRow(
     modifier: Modifier = Modifier,
     shape: Shape = ChipDefaults.DefaultShape,
     border: BorderStroke? = null,
-    colors: ChipColors = ChipDefaults.buttonColors(),
+    colors: ChipColors = ChipDefaults.chipColors(),
     contentPadding: PaddingValues = ChipDefaults.ContentPadding,
     content: @Composable RowScope.(chipModel: T) -> Unit,
     chipPadding: PaddingValues = ChipDefaults.ChipPaddings,
@@ -47,7 +47,7 @@ fun <T : TextChipModel> TextChipsRow(
     modifier: Modifier = Modifier,
     shape: Shape = ChipDefaults.DefaultShape,
     border: BorderStroke? = null,
-    colors: ChipColors = ChipDefaults.buttonColors(),
+    colors: ChipColors = ChipDefaults.chipColors(),
     contentPadding: PaddingValues = ChipDefaults.ContentPadding,
     chipPadding: PaddingValues = ChipDefaults.ChipPaddings,
     onClick: (textChipModel: T) -> Unit
@@ -71,7 +71,7 @@ fun <T : ImageChipModel> ImageChipsRow(
     modifier: Modifier = Modifier,
     shape: Shape = ChipDefaults.DefaultShape,
     border: BorderStroke? = null,
-    colors: ChipColors = ChipDefaults.buttonColors(),
+    colors: ChipColors = ChipDefaults.chipColors(),
     contentPadding: PaddingValues = ChipDefaults.ContentPadding,
     chipPadding: PaddingValues = ChipDefaults.ChipPaddings,
     onClick: (textChipModel: T) -> Unit

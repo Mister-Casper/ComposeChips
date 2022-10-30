@@ -44,6 +44,8 @@ open class ChipsController<T : ChipModel>(
 
     fun getEnableChips(): List<T> = identifiedChips.filter { it.isEnable }
 
+    fun getFirstEnableChips(): T? = identifiedChips.firstOrNull { it.isEnable }
+
     fun getDisableChips(): List<T> = identifiedChips.filter { !it.isEnable }
 
     fun setChips(chips: List<T>) {

@@ -41,7 +41,7 @@ fun <T : ChipModel> Chip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = ChipDefaults.DefaultShape,
-    colors: ChipColors = ChipDefaults.buttonColors(),
+    colors: ChipColors = ChipDefaults.chipColors(),
     border: BorderStroke?,
     contentPadding: PaddingValues = ChipDefaults.ContentPadding,
     chipPadding: PaddingValues = ChipDefaults.ChipPaddings,
