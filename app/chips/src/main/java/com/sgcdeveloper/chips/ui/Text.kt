@@ -18,7 +18,7 @@ import com.sgcdeveloper.chips.model.StringText
 import com.sgcdeveloper.chips.model.Text
 
 @Composable
-fun Text(
+internal fun Text(
     text: Text,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
